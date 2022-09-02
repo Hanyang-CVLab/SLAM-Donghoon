@@ -28,6 +28,30 @@ namespace dhSLAM{
 
     }
 
+    int ReadgtPose(const std::string gtpath, std::vector<Vector6d>* poses)
+    {
+        std::ifstream gtFile(gtpath, std::ifstream::in);
+        if(!gtFile.is_open()){
+            std::cout << " gtpose file failed to open " << std::endl;
+            return EXIT_FAILURE;
+        }
+
+        std::string line;
+        while(std::getline(gtFile, line)){
+            std::string value;
+            std::vector<std::string> values;
+
+            std::stringstream ss(line);
+            while(std::getline(ss, value, ' '))
+                values.push_back(value);
+            
+            Vector6d pose;
+            pose << std::stod(values[1]), std::stod(values[2]), std::stod(values[3]), std::stod(values[4]), std::stod(values[5]), std::stod(values[6]);
+            poses->push_back(pose);
+        }       
+
+    }
+
     int ReadKFPose(std::string KFpath, std::vector<Vector6d>* poses, std::vector<double>* timeStamps)
     {
         std::ifstream KFfile(KFpath, std::ifstream::in);
@@ -54,9 +78,62 @@ namespace dhSLAM{
                 Eigen::Vector3d t;
                 t << std::stod(values[1]), std::stod(values[2]), std::stod(values[3]);
 
-                Vector6d pose = To6DOF(q, t); 
+                Vector6d pose = ToVec6(q, t); 
                 poses->push_back(pose);
                 timeStamps->push_back(std::stod(values[0]));
             }     
+    }
+
+    int readCsvGtPose(std::string gtpath, std::vector<Vector6d>* poses, std::vector<double>* timeStamps)
+    {
+        std::ifstream gtFile(gtpath, std::ifstream::in);
+        if(!gtFile.is_open()){
+            std::cout << " gtpose file failed to open " << std::endl;
+            return EXIT_FAILURE;
+        }
+
+        int lineNum = 0;
+        std::string line;
+        while(std::getline(gtFile, line)){
+            if(lineNum == 0){
+                lineNum++;
+                continue;
+            }
+            std::string value;
+            std::vector<std::string> values;
+
+            std::stringstream ss(line);
+            while(std::getline(ss, value, ','))
+                values.push_back(value);
+            
+            Eigen::Quaterniond q;
+            q.x() = std::stod(values[5]);
+            q.y() = std::stod(values[6]);
+            q.z() = std::stod(values[7]);
+            q.w() = std::stod(values[4]);
+
+            Eigen::Vector3d t;
+            t << std::stod(values[1]), std::stod(values[2]),std::stod( values[3]);
+            Vector6d Pose = ToVec6(q, t);
+            poses->push_back(Pose);
+            // double timestamp = std::floor(std::stod(values[0]) * 1e5) * 1e-5;
+            timeStamps->push_back(std::stod(values[0]));
+        }       
+
+    }
+
+    int FindTimestampIdx(const double a, const std::vector<double> b)
+    {
+        double MinVal = DBL_MAX;
+        int MinIdx = -1;
+
+        for(int i = 0; i < b.size(); i++){
+            double diff = std::fabs(b[i] - a);
+            if(diff < MinVal){
+                MinVal = diff;
+                MinIdx = i;
+            }
+        }
+        return MinIdx;
     }
 }    

@@ -1,27 +1,27 @@
 #include "utils.h"
 
 namespace dhSLAM{
+
 // Converter
-    cv::Mat VectorMatToMat(std::vector<cv::Mat> Descriptor)
+    cv::Mat VectorMat2Mat(std::vector<cv::Mat> discriptor)
     {
-        cv::Mat Descriptors(Descriptor.front());
-        for(size_t i = 1; i < Descriptor.size(); i++){
-            cv::vconcat(Descriptors, Descriptor[i], Descriptors);
+        cv::Mat discriptors(discriptor.front());
+        for(size_t i = 1; i < discriptor.size(); i++){
+            cv::vconcat(discriptors, discriptor[i], discriptors);
         }
 
-        return Descriptors;
+        return discriptors;
     }
 
-    std::vector<cv::Mat> MatToVectorMat(cv::Mat Descriptor)
+    std::vector<cv::Mat> Mat2VectorMat(cv::Mat discriptor)
     {
-        std::vector<cv::Mat> Descriptors;
-        Descriptors.resize(Descriptor.rows);
-        for(int i = 0; i < Descriptor.rows; i++){
-            Descriptors[i] = Descriptor.row(i);
+        std::vector<cv::Mat> discriptors;
+        discriptors.resize(discriptor.rows);
+        for(int i = 0; i < discriptor.rows; i++){
+            discriptors[i] = discriptor.row(i);
         }
-        return Descriptors;
+        return discriptors;
     }
-
 
     std::vector<cv::KeyPoint> Point2f2KeyPoint(std::vector<cv::Point2f> pts2f)
     {
@@ -39,44 +39,8 @@ namespace dhSLAM{
         return pts2f;
     }
 
-    // Eigen::Vector3d To3DOF(Eigen::Quaterniond q)
-    // {
-    //     Eigen::Matrix3d R(q);
-    //     Eigen::AngleAxisd rod(R);
-    //     Eigen::Vector3d r(rod.axis());
-    //     double angle = rod.angle();
-    //     r *= angle;
-
-    //     Eigen::Vector3d r_pose;
-    //     r_pose << r.x(), r.y(), r.z();
-
-    //     return r_pose;
-    // }
-
-    Eigen::Matrix4Xf HomogeneousForm(std::vector<cv::Point3d> Wpts)
-    {
-        Eigen::Matrix4Xf WPts(4, Wpts.size());
-        for(int i = 0; i < Wpts.size(); i++){
-            WPts(0, i) = (float)Wpts[i].x;
-            WPts(1, i) = (float)Wpts[i].y;
-            WPts(2, i) = (float)Wpts[i].z;
-            WPts(3, i) = 1.0f;
-        }
-        return WPts;   
-    }
-
-    Eigen::Matrix3Xf HomogeneousForm(std::vector<cv::Point2f> Imgpts)
-    {
-        Eigen::Matrix3Xf ImgPts(3, Imgpts.size());
-        for(int i = 0; i < Imgpts.size(); i++){
-            ImgPts(0, i) = Imgpts[i].x;
-            ImgPts(1, i) = Imgpts[i].y;
-            ImgPts(2, i) = 1.0f;
-        }
-        return ImgPts;   
-    }
-
-    Eigen::MatrixXf Mat2Eigen(cv::Mat a)
+    // float
+    Eigen::MatrixXf Matf2Eigen(cv::Mat a)
     {
         Eigen::MatrixXf b(a.rows, a.cols);
         for(int i = 0; i < b.rows(); i++){
@@ -86,6 +50,237 @@ namespace dhSLAM{
         }
         return b;
     }
+
+    // double
+    Eigen::MatrixXd Matd2Eigen(cv::Mat a)
+    {
+        Eigen::MatrixXd b(a.rows, a.cols);
+        for(int i = 0; i < b.rows(); i++){
+            for(int j = 0; j < b.cols(); j++){
+                b(i, j) = a.at<double>(i, j);
+            }
+        }
+        return b;
+    }
+
+    template <typename T>
+    cv::Mat Eigen2Mat(Eigen::Matrix<T, -1, -1> a)
+    {
+        cv::Mat b(a.rows(), a.cols());
+        for(int i = 0; i < b.rows; i++){
+            for(int j = 0; j < b.cols; j++){
+                b.at<T>(i, j) = a(i, j);
+            }
+        }
+        return b.clone();
+    }
+    
+    template <typename T>
+    Eigen::Matrix<T, 3, 1> ToVec3(Eigen::Matrix<T, 3, 3> rot)
+    {
+        Eigen::AngleAxis<T> rod(rot);
+        Eigen::Matrix<T, 3, 1> axis(rod.axis());
+
+        T angle = rod.angle();
+        axis *= angle;
+        Eigen::Matrix<T, 3, 1> vec3;
+        vec3 << axis.x(), axis.y(), axis.z();
+
+        return vec3;
+    }
+    
+    template <typename T>
+    Eigen::Matrix<T, 3, 3> ToMat33(Eigen::Matrix<T, 3, 1> rod)
+    {
+        Eigen::AngleAxis<T> r(rod.norm(), rod.normalized());
+        Eigen::Matrix<T, 3, 3> rot = r.toRotationMatrix();
+
+        return rot;
+    }
+    
+    template <typename T>
+    Eigen::Matrix<T, 4, 4> ToMat44(Eigen::Matrix<T, 6, 1> pose)
+    {
+        Eigen::Matrix<T, 3, 1> rod;
+        rod << pose[0], pose[1], pose[2];
+        Eigen::Matrix<T, 3, 3> rot = ToMat33(rod);
+
+        Eigen::Matrix<T, 4, 4> RT;
+        RT <<   rot(0, 0), rot(0, 1), rot(0, 2), pose[3],
+                rot(1, 0), rot(1, 1), rot(1, 2), pose[4],
+                rot(2, 0), rot(2, 1), rot(2, 2), pose[5],
+                0,         0,         0,         1;
+
+        return RT;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 4, 4> ToMat44(std::vector<T> pose)
+    {
+        Eigen::Matrix<T, 6, 1> vec6;
+        vec6 << pose[0], pose[1], pose[2], pose[3], pose[4], pose[5];
+        return ToMat44(vec6);
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 6, 1> ToVec6(Eigen::Matrix<T, 4, 4> RT)
+    {
+        Eigen::Matrix<T, 3, 3> R = RT.template block<3, 3>(0, 0);
+        Eigen::Matrix<T, 3, 1> rod = ToVec3(R);
+        
+        Eigen::Matrix<T, 6, 1> Pose;
+        Pose << rod.x(), rod.y(), rod.z(), RT(0, 3), RT(1, 3), RT(2, 3);
+        return Pose;
+    }
+    
+    template <typename T>
+    Eigen::Matrix<T, 6, 1> ToVec6(Eigen::Quaternion<T> q, Eigen::Matrix<T, 3, 1> t)
+    {
+        Eigen::AngleAxis<T> rod(q);
+        Eigen::Matrix<T, 3, 1> r(rod.axis());
+
+        T angle = rod.angle();
+        r *= angle;
+        Eigen::Matrix<T, 6, 1>  Pose;
+        Pose << r.x(), r.y(), r.z(), t.x(), t.y(), t.z();
+
+        return Pose;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 3, 1> ToVec3(Eigen::Quaternion<T> q)
+    {
+        Eigen::Matrix<T, 3, 3> R(q);
+        Eigen::Matrix<T, 3, 1> r = ToVec3(R);
+        return r;
+    }
+
+    template <typename T>
+    Eigen::Quaternion<T> ToQuaternion(Eigen::Matrix<T, 3, 1> rod)
+    {
+        Eigen::Matrix<T, 3, 3> rot = ToMat33(rod);
+        Eigen::Quaternion<T> q(rot);
+        return q; 
+    }
+
+    template <typename T>
+    Eigen::Quaternion<T> ToQuaternion(Eigen::Matrix<T, 3, 3> rot)
+    {
+        Eigen::Quaternion<T> q(rot);
+        return q;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 6, 1> ToProjection(Eigen::Matrix<T, 6, 1> &pos)
+    {
+        Eigen::Matrix<T, 4, 4> pos44 = ToMat44(pos);
+        Eigen::Matrix<T, 4, 4> proj44 = pos44.inverse();
+        Eigen::Matrix<T, 6, 1> proj = ToVec6(proj44);
+        return proj;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 4, 4> ToProjection(Eigen::Matrix<T, 4, 4> &pos44)
+    {
+        Eigen::Matrix<T, 4, 4> proj44 = pos44.inverse();
+        return proj44;
+    }
+    
+    template <typename T>
+    Eigen::Matrix<T, 6, 1> ToMotion(Eigen::Matrix<T, 6, 1> &proj)
+    {
+        Eigen::Matrix<T, 4, 4> proj44 = ToMat44(proj);
+        Eigen::Matrix<T, 4, 4> pos44 = proj44.inverse();
+        Eigen::Matrix<T, 6, 1> pos = ToVec6(pos44);
+        return pos;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 4, 4> ToMotion(Eigen::Matrix<T, 4, 4> &proj44)
+    {
+        Eigen::Matrix<T, 4, 4> pos44 = proj44.inverse();
+        return pos44;
+    }    
+    
+    template <typename T>
+    cv::Mat ToProj34(Eigen::Matrix<T, 6, 1> pos)
+    {
+        Eigen::Matrix<T, 4, 4> pos44 = ToMat44(pos);
+        // double data[] = {   CamProj(0, 0), CamProj(0, 1), CamProj(0, 2), CamProj(0, 3),
+        //                     CamProj(1, 0), CamProj(1, 1), CamProj(1, 2), CamProj(1, 3),
+        //                     CamProj(2, 0), CamProj(2, 1), CamProj(2, 2), CamProj(2, 3)};
+        // cv::Mat Proj34(3, 4, CV_64F, data);
+        cv::Mat projM34 = ToProj34(pos44);
+        return projM34.clone();
+    }
+        
+    template <typename T>
+    cv::Mat ToProj34(Eigen::Matrix<T, 4, 4> pos44)
+    {
+        Eigen::Matrix<T, 4, 4> proj44 = pos44.inverse();
+        Eigen::Matrix<T, 3, 4> proj34 = proj44.template block<3, 4>(0, 0);
+        cv::Mat projM34 = Eigen2Mat(proj34);
+        return projM34.clone();        
+    }
+
+    cv::Mat ToHomogeneous(cv::Mat projM34)
+    {
+        cv::Mat projM44;
+        cv::Mat Iden = cv::Mat::eye(4, 4, CV_64F);
+        cv::vconcat(projM34, Iden.row(3), projM44);
+        return projM44;
+    }
+
+    template <typename T>
+    Eigen::Matrix<T, 4, 4> ToHomogeneous(Eigen::Matrix<T, 3, 4> proj34)
+    {
+        Eigen::Matrix<T, 1, 4> Iden;
+        Iden << 0, 0, 0, 1;
+        Eigen::Matrix<T, 4, 4> proj44(proj34.rows() + Iden.rows(), proj34.cols());
+        proj44 << proj34, Iden;
+        return proj44;
+    }    
+
+    Eigen::Matrix4d Projd34ToMotion(cv::Mat projM34)
+    {
+        cv::Mat projM44 = ToHomogeneous(projM34);
+        Eigen::Matrix4d proj44 = Matd2Eigen(projM44);
+        return proj44.inverse();      
+    }
+
+    Eigen::Matrix4f Projf34ToMotion(cv::Mat projM34)
+    {
+        cv::Mat projM44 = ToHomogeneous(projM34);
+        Eigen::Matrix4f proj44 = Matf2Eigen(projM44);
+        return proj44.inverse();      
+    }
+
+    float VerticalAngle(Eigen::Vector3d p){
+    return atan(p.z() / sqrt(p.x() * p.x() + p.y() * p.y())) * 180 / M_PI;
+    }
+
+    double PointDistance(Eigen::Vector3d p){
+    return sqrt(p.x()*p.x() + p.y()*p.y() + p.z()*p.z());
+    }
+
+    double PointDistance(Eigen::Vector3d p1, Eigen::Vector3d p2){
+    return sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()) + (p1.z()-p2.z())*(p1.z()-p2.z()));
+    }
+
+    double CosRaw2(double a, double b, float ang){
+        return sqrt(a * a + b * b - 2 * a * b * cos(ang * M_PI / 180));
+    }
+
+    double Rad2Degree(double rad){
+        return rad * 180 / M_PI;
+    }
+
+    double Ddegree2Rad(double degree){
+        return degree * M_PI / 180;
+    }
+
+
+// TODO : clean up below code
 
 //////////////////////////////////////////////////////////
 Eigen::Vector3d Origin{0.0, 0.0, 0.0};
@@ -122,11 +317,6 @@ cv::Mat Kf = GetKf(IntrinsicData_);
 cv::Point2d c(cx, cy); 
 
 
-// ViconRoom1  body(IMU) - cam0 //
-
-
-
-// ViconRoom2  body(IMU) - cam0 //
 
 
 
@@ -165,29 +355,7 @@ Eigen::Matrix4d GetCam1ToCam0(double * Cam2BodyData0, double * Cam2BodyData1)
     return Cam1ToCam0;
 }
 
-int ReadgtPose(const std::string gtpath, std::vector<Vector6d>* poses)
-{
-    std::ifstream gtFile(gtpath, std::ifstream::in);
-    if(!gtFile.is_open()){
-        std::cout << " gtpose file failed to open " << std::endl;
-        return EXIT_FAILURE;
-    }
 
-    std::string line;
-    while(std::getline(gtFile, line)){
-        std::string value;
-        std::vector<std::string> values;
-
-        std::stringstream ss(line);
-        while(std::getline(ss, value, ' '))
-            values.push_back(value);
-        
-        Vector6d pose;
-        pose << std::stod(values[1]), std::stod(values[2]), std::stod(values[3]), std::stod(values[4]), std::stod(values[5]), std::stod(values[6]);
-        poses->push_back(pose);
-    }       
-
-}
 
 
 std::vector<Eigen::Vector3d> Mat3XdToVec3d(Eigen::Matrix3Xd LidarPoints)
@@ -204,166 +372,19 @@ std::vector<Eigen::Vector3d> Mat3XdToVec3d(Eigen::Matrix3Xd LidarPoints)
 
 
 
-Eigen::Vector3d ToVec3(Eigen::Matrix3d rot)
-{
-    Eigen::AngleAxisd rod(rot);
-    Eigen::Vector3d axis(rod.axis());
-    double angle = rod.angle();
-    axis *= angle;
-
-    Eigen::Vector3d vec3;
-    vec3 << axis.x(), axis.y(), axis.z();
-
-    return vec3;
-}
-
-Eigen::Vector3f ToVec3(Eigen::Matrix3f rot)
-{
-    Eigen::AngleAxisf rod(rot);
-    Eigen::Vector3f axis(rod.axis());
-    float angle = rod.angle();
-    axis *= angle;
-
-    Eigen::Vector3f vec3;
-    vec3 << axis.x(), axis.y(), axis.z();
-
-    return vec3;
-}
-
-Eigen::Matrix3d ToMat33(Eigen::Vector3d rod)
-{
-    Eigen::AngleAxisd r(rod.norm(), rod.normalized());
-    Eigen::Matrix3d rot = r.toRotationMatrix();
-
-    return rot;
-}
-
-Eigen::Matrix3f ToMat33(Eigen::Vector3f rod)
-{
-    Eigen::AngleAxisf r(rod.norm(), rod.normalized());
-    Eigen::Matrix3f rot = r.toRotationMatrix();
-
-    return rot;
-}
-
-Vector6d To6DOF(Eigen::Quaterniond q, Eigen::Vector3d t)
-{
-    Eigen::AngleAxisd rod(q);
-    Eigen::Vector3d r(rod.axis());
-    double angle = rod.angle();
-    r *= angle;
-
-    Vector6d Pose;
-    Pose << r.x(), r.y(), r.z(), t.x(), t.y(), t.z();
-
-    return Pose;
-}
-
-Vector6d To6DOF(Eigen::Matrix4d RT)
-{
-    Eigen::Matrix3d R = RT.block<3, 3>(0, 0);
-    Eigen::Vector3d rod = ToVec3(R);
-    
-    Vector6d Pose;
-    Pose << rod.x(), rod.y(), rod.z(), RT(0, 3), RT(1, 3), RT(2, 3);
-    return Pose;
-}
-
-Eigen::Quaterniond ToQuaternion(const Vector6d Pose)
-{
-    Eigen::Matrix4d Pos = To44RT(Pose);
-    Eigen::Matrix3d rot = Pos.block<3, 3>(0, 0); 
-
-    Eigen::Quaterniond q(rot);
-
-    return q; 
-}
 
 
 
-Eigen::Matrix4f To44RT(Vector6f pose)
-{
-    Eigen::Vector3f rod;
-    rod << pose[0], pose[1], pose[2];
-    Eigen::Matrix3f rot = ToMat33(rod);
-
-    Eigen::Matrix4f RT;
-    RT <<   rot(0, 0), rot(0, 1), rot(0, 2), pose[3],
-            rot(1, 0), rot(1, 1), rot(1, 2), pose[4],
-            rot(2, 0), rot(2, 1), rot(2, 2), pose[5],
-            0,         0,         0,         1;
-
-    return RT;
-}
-
-Eigen::Matrix4d To44RT(Vector6d pose)
-{
-    Eigen::Vector3d rod;
-    rod << pose[0], pose[1], pose[2];
-    Eigen::Matrix3d rot = ToMat33(rod);
-
-    Eigen::Matrix4d RT;
-    RT <<   rot(0, 0), rot(0, 1), rot(0, 2), pose[3],
-            rot(1, 0), rot(1, 1), rot(1, 2), pose[4],
-            rot(2, 0), rot(2, 1), rot(2, 2), pose[5],
-            0,         0,         0,         1;
-
-    return RT;
-}
-
-Eigen::Matrix4d To44RT(std::vector<double> pose)
-{
-    Eigen::Vector3d rod;
-    rod << pose[0], pose[1], pose[2];
-
-    Eigen::Matrix3d R = ToMat33(rod);
-
-    Eigen::Matrix4d RT;
-    RT <<   R(0, 0), R(0, 1), R(0, 2), pose[3],
-            R(1, 0), R(1, 1), R(1, 2), pose[4],
-            R(2, 0), R(2, 1), R(2, 2), pose[5],
-            0,       0,       0,       1;
-
-    return RT;
-}
-
-cv::Mat Vec6To34ProjMat(Vector6d pose)
-{
-    Eigen::Matrix4d CamPose = To44RT(pose);
-    std::cout << "lpose : " << CamPose << std::endl;
-    Eigen::Matrix4d CamProj = CamPose.inverse();
-    double data[] = {   CamProj(0, 0), CamProj(0, 1), CamProj(0, 2), CamProj(0, 3),
-                        CamProj(1, 0), CamProj(1, 1), CamProj(1, 2), CamProj(1, 3),
-                        CamProj(2, 0), CamProj(2, 1), CamProj(2, 2), CamProj(2, 3)};
-    cv::Mat Proj34(3, 4, CV_64F, data);
-    return Proj34.clone();
-}
-
-cv::Mat rVec6To34ProjMat(Vector6d pose)
-{
-    Eigen::Matrix4d lCamPose = To44RT(pose);
-    Eigen::Matrix4d rCamPose = lCamPose * GetCam1ToCam0(Cam0ToBodyData, Cam1ToBodyData);
-    // rCamPose(0,3) = rCamPose(0,3) + 0.5;
-    std::cout << "rpose : " << rCamPose << std::endl;
-    Eigen::Matrix4d CamProj = rCamPose.inverse();
-    double data[] = {   CamProj(0, 0), CamProj(0, 1), CamProj(0, 2), CamProj(0, 3),
-                        CamProj(1, 0), CamProj(1, 1), CamProj(1, 2), CamProj(1, 3),
-                        CamProj(2, 0), CamProj(2, 1), CamProj(2, 2), CamProj(2, 3)};    
-    cv::Mat Proj34(3, 4, CV_64F, data);
-    return Proj34.clone();
 
 
-}
 
-Eigen::Matrix4d Proj34ToPose(cv::Mat Proj)
-{
-    Eigen::Matrix4d Proj_;
-    Proj_ << Proj.at<double>(0, 0), Proj.at<double>(0, 1), Proj.at<double>(0, 2), Proj.at<double>(0, 3),
-            Proj.at<double>(1, 0), Proj.at<double>(1, 1), Proj.at<double>(1, 2), Proj.at<double>(1, 3),
-            Proj.at<double>(2, 0), Proj.at<double>(2, 1), Proj.at<double>(2, 2), Proj.at<double>(2, 3),
-            0, 0, 0, 1;
-    return Proj_.inverse();
-}
+
+
+
+
+
+
+
 
 double ToAngle(Eigen::Matrix4d LidarRotation)
 {
@@ -383,37 +404,9 @@ Eigen::Vector3d ToAxis(Eigen::Matrix4d LidarRotation)
     return Axis;
 }
 
-Vector6d ToProjection(Vector6d pose)
-{
-    Eigen::Matrix4d pos = To44RT(pose);
-    Eigen::Matrix4d pos_ = pos.inverse();
-    Vector6d proj = To6DOF(pos_);
-    return proj;
-}
 
-float VerticalAngle(Eigen::Vector3d p){
-  return atan(p.z() / sqrt(p.x() * p.x() + p.y() * p.y())) * 180 / M_PI;
-}
 
-double PointDistance(Eigen::Vector3d p){
-  return sqrt(p.x()*p.x() + p.y()*p.y() + p.z()*p.z());
-}
 
-double PointDistance(Eigen::Vector3d p1, Eigen::Vector3d p2){
-  return sqrt((p1.x()-p2.x())*(p1.x()-p2.x()) + (p1.y()-p2.y())*(p1.y()-p2.y()) + (p1.z()-p2.z())*(p1.z()-p2.z()));
-}
-
-double CosRaw2(double a, double b, float ang){
-    return sqrt(a * a + b * b - 2 * a * b * cos(ang * M_PI / 180));
-}
-
-double Rad2Degree(double rad){
-    return rad * 180 / M_PI;
-}
-
-double Ddegree2Rad(double degree){
-    return degree * M_PI / 180;
-}
 
 std::vector<cv::Point3d> ToXYZ(cv::Mat &X)
 {
@@ -444,7 +437,7 @@ std::vector<float> ReprojectionError(std::vector<cv::Point3d> WPts, std::vector<
     Eigen::Matrix4f Pose_ = Pose.cast<float>();
     Eigen::Matrix<float, 3, 4> PoseRT;
     PoseRT = Pose_.block<3, 4>(0, 0);
-    Eigen::MatrixXf K_ = Mat2Eigen(Kf);
+    Eigen::MatrixXf K_ = Matf2Eigen(Kf);
     ReprojectPoints = PoseRT * WorldPoints;
 
     for(int i = 0; i < ReprojectPoints.cols(); i++){
@@ -473,225 +466,14 @@ std::vector<float> ReprojectionError(std::vector<cv::Point3d> WPts, std::vector<
     return ReprojectErr;
 }
 
-int FindTimestampIdx(const double a, const std::vector<double> b)
-{
-    double MinVal = DBL_MAX;
-    int MinIdx = -1;
-
-    for(int i = 0; i < b.size(); i++){
-        double diff = std::fabs(b[i] - a);
-        if(diff < MinVal){
-            MinVal = diff;
-            MinIdx = i;
-        }
-    }
-    return MinIdx;
-}
-
-    int readCsvGtPose(std::string gtpath, std::vector<Vector6d>* poses, std::vector<double>* timeStamps)
-    {
-        std::ifstream gtFile(gtpath, std::ifstream::in);
-        if(!gtFile.is_open()){
-            std::cout << " gtpose file failed to open " << std::endl;
-            return EXIT_FAILURE;
-        }
-
-        int lineNum = 0;
-        std::string line;
-        while(std::getline(gtFile, line)){
-            if(lineNum == 0){
-                lineNum++;
-                continue;
-            }
-            std::string value;
-            std::vector<std::string> values;
-
-            std::stringstream ss(line);
-            while(std::getline(ss, value, ','))
-                values.push_back(value);
-            
-            Eigen::Quaterniond q;
-            q.x() = std::stod(values[5]);
-            q.y() = std::stod(values[6]);
-            q.z() = std::stod(values[7]);
-            q.w() = std::stod(values[4]);
-
-            Eigen::Vector3d t;
-            t << std::stod(values[1]), std::stod(values[2]),std::stod( values[3]);
-            Vector6d Pose = To6DOF(q, t);
-            poses->push_back(Pose);
-            // double timestamp = std::floor(std::stod(values[0]) * 1e5) * 1e-5;
-            timeStamps->push_back(std::stod(values[0]));
-        }       
-
-    }
 
 
-void OpticalFlowStereo( cv::Mat previous, 
-                        cv::Mat current, 
-                        std::vector<cv::Point2f> &previous_pts, 
-                        std::vector<cv::Point2f> &current_pts,
-                        std::vector<cv::Mat> &lDescriptor)
-{
-    std::vector<uchar> status;
-    cv::Mat err;
-
-    cv::calcOpticalFlowPyrLK(previous, current, previous_pts, current_pts, status, err);
 
 
-    const int image_x_size_ = previous.cols;
-    const int image_y_size_ = previous.rows;
-
-    // remove err point
-    int indexCorrection = 0;
-
-    for( int i = 0; i < status.size(); i++)
-    {
-        cv::Point2f pt = current_pts.at(i- indexCorrection);
-        if((pt.x < 0)||(pt.y < 0 )||(pt.x > image_x_size_)||(pt.y > image_y_size_)) status[i] = 0;
-        if (status[i] == 0)	
-        {
-                    
-                    previous_pts.erase ( previous_pts.begin() + i - indexCorrection);
-                    current_pts.erase (current_pts.begin() + i - indexCorrection);
-                    lDescriptor.erase(lDescriptor.begin() + i - indexCorrection);
-                    indexCorrection++;
-        }
-
-    }
-    
-    
-
-    // int indexCorrection_ = 0;
-    // int ptsNum = previous_pts.size();
-    // for(int i = 0; i < ptsNum; i++){
-    //     double diff_x = std::fabs(previous_pts[i - indexCorrection_].x - current_pts[i - indexCorrection_].x);
-    //     double diff_y = std::fabs(previous_pts[i - indexCorrection_].y - current_pts[i - indexCorrection_].y);
-    //     std::cout << diff_x << "  " << diff_y << std::endl;
-    //     if(diff_x > 30 || diff_y > 15){
-    //         previous_pts.erase ( previous_pts.begin() + i - indexCorrection_);
-    //         current_pts.erase (current_pts.begin() + i - indexCorrection_);
-    //         indexCorrection_++;           
-    //     }
-    // }
-}
-
-void OpticalFlowStereo( cv::Mat previous, 
-                        cv::Mat current, 
-                        std::vector<cv::Point2f> &previous_pts, 
-                        std::vector<cv::Point2f> &current_pts)
-{
-    std::vector<uchar> status;
-    cv::Mat err;
-
-    cv::calcOpticalFlowPyrLK(previous, current, previous_pts, current_pts, status, err);
 
 
-    const int image_x_size_ = previous.cols;
-    const int image_y_size_ = previous.rows;
-
-    // remove err point
-    int indexCorrection = 0;
-
-    for( int i = 0; i < status.size(); i++)
-    {
-        cv::Point2f pt = current_pts.at(i- indexCorrection);
-        if((pt.x < 0)||(pt.y < 0 )||(pt.x > image_x_size_)||(pt.y > image_y_size_)) status[i] = 0;
-        if (status[i] == 0)	
-        {
-                    
-                    previous_pts.erase ( previous_pts.begin() + i - indexCorrection);
-                    current_pts.erase (current_pts.begin() + i - indexCorrection);
-                    indexCorrection++;
-        }
-
-    }
-}
-
-void OpticalFlowTracking(cv::Mat previous, cv::Mat current, std::vector<cv::Point2f> &previous_pts, std::vector<cv::Point2f> &current_pts, std::vector<int> &trackIds)
-{
-    std::vector<uchar> status;
-    cv::Mat err;
-
-    cv::calcOpticalFlowPyrLK(previous, current, previous_pts, current_pts, status, err);
 
 
-    const int image_x_size_ = previous.cols;
-    const int image_y_size_ = previous.rows;
-
-    // remove err point
-    int indexCorrection = 0;
-
-    for( int i = 0; i < status.size(); i++)
-    {
-        cv::Point2f pt = current_pts.at(i- indexCorrection);
-        if((pt.x < 0)||(pt.y < 0 )||(pt.x > image_x_size_)||(pt.y > image_y_size_)) status[i] = 0;
-        if (status[i] == 0)	
-        {
-                    
-                    previous_pts.erase ( previous_pts.begin() + i - indexCorrection);
-                    current_pts.erase (current_pts.begin() + i - indexCorrection);
-                    trackIds.erase (trackIds.begin() + i - indexCorrection);
-                    indexCorrection++;
-        }
-
-    }
-
-    int indexCorrection_ = 0;
-    int ptsNum = previous_pts.size();
-    for(int i = 0; i < ptsNum; i++){
-        double diff_x = std::fabs(previous_pts[i - indexCorrection_].x - current_pts[i - indexCorrection_].x);
-        double diff_y = std::fabs(previous_pts[i - indexCorrection_].y - current_pts[i - indexCorrection_].y);
-        // std::cout << diff_x << "  " << diff_y << std::endl;
-        if(diff_x > 200 || diff_y > 120){
-            previous_pts.erase ( previous_pts.begin() + i - indexCorrection_);
-            current_pts.erase (current_pts.begin() + i - indexCorrection_);
-            indexCorrection_++;           
-        }
-    }   
-}
-
-cv::Mat DrawKLTmatchLine(cv::Mat image1, cv::Mat image2, std::vector<cv::Point2f> previous_pts, std::vector<cv::Point2f> current_pts)
-{
-    cv::Mat MatchImg; 
-    cv::hconcat(image1, image2, MatchImg);
-    const int rNum = image1.cols;
-    std::vector<cv::Point2f> rImgPtsf(current_pts.size());
-    for(int i = 0; i < current_pts.size(); i++){
-        cv::Point2f pts(current_pts[i].x + rNum, current_pts[i].y);
-        rImgPtsf[i] = pts;
-    }
-    if (MatchImg.channels() < 3) cv::cvtColor(MatchImg, MatchImg, cv::COLOR_GRAY2RGB);
-    for(int i = 0; i < previous_pts.size(); i++){
-        cv::Scalar randomColor = cv::Scalar(rand() % 255,rand() % 255,rand() % 255);
-        cv::line(MatchImg, previous_pts[i], rImgPtsf[i], randomColor, 1);
-        cv::circle(MatchImg, previous_pts[i], 3, randomColor, 1);
-        cv::circle(MatchImg, rImgPtsf[i], 3, randomColor, 1);
-    }
-
-    return MatchImg.clone();
-}
-
-cv::Mat DrawKLTmatchLine_vertical(cv::Mat image1, cv::Mat image2, std::vector<cv::Point2f> previous_pts, std::vector<cv::Point2f> current_pts)
-{
-    cv::Mat MatchImg; 
-    cv::vconcat(image1, image2, MatchImg);
-    const int rNum = image1.rows;
-    std::vector<cv::Point2f> rImgPtsf(current_pts.size());
-    for(int i = 0; i < current_pts.size(); i++){
-        cv::Point2f pts(current_pts[i].x , current_pts[i].y + rNum);
-        rImgPtsf[i] = pts;
-    }
-    if (MatchImg.channels() < 3) cv::cvtColor(MatchImg, MatchImg, cv::COLOR_GRAY2RGB);
-    for(int i = 0; i < previous_pts.size(); i++){
-        cv::Scalar randomColor = cv::Scalar(rand() % 255,rand() % 255,rand() % 255);
-        cv::line(MatchImg, previous_pts[i], rImgPtsf[i], randomColor, 1);
-        cv::circle(MatchImg, previous_pts[i], 3, randomColor, 1);
-        cv::circle(MatchImg, rImgPtsf[i], 3, randomColor, 1);
-    }
-
-    return MatchImg.clone();
-}
 
 void RemoveMPoutlier(   std::vector<cv::Point3d> &mp, 
                         std::vector<cv::Point2f> &lpts, 
@@ -702,7 +484,7 @@ void RemoveMPoutlier(   std::vector<cv::Point3d> &mp,
 {
     Eigen::Matrix<double, 4, 1> initCamView;
     initCamView << 0, 0, 1, 0;
-    Eigen::Matrix4d camPose = To44RT(pose);
+    Eigen::Matrix4d camPose = ToMat44(pose);
     
     Eigen::Matrix<double, 4, 1> currCamView_ = camPose * initCamView;
     std::cout << "current view : " << currCamView_.transpose() << std::endl;
@@ -737,7 +519,7 @@ void RemoveMPoutlier(   std::vector<cv::Point3d> &mp,
 
     std::cout << " remove cam back and remain landmark num :  " << mp.size() << std::endl;    
     int indexCorrection_ = 0;
-    Eigen::Matrix4d Pose44 = To44RT(pose);
+    Eigen::Matrix4d Pose44 = ToMat44(pose);
     std::vector<float> reProjErr = ReprojectionError(mp, lpts, Pose44);
     for(int i = 0; i < reProjErr.size(); i++){
         if(reProjErr[i] > 3.1){
@@ -779,4 +561,43 @@ void RemoveOutlierMatch(    std::vector<cv::Point2f> &lpts,
     }    
 }
 
+    Eigen::Matrix4Xf HomogeneousForm(std::vector<cv::Point3d> Wpts)
+    {
+        Eigen::Matrix4Xf WPts(4, Wpts.size());
+        for(int i = 0; i < Wpts.size(); i++){
+            WPts(0, i) = (float)Wpts[i].x;
+            WPts(1, i) = (float)Wpts[i].y;
+            WPts(2, i) = (float)Wpts[i].z;
+            WPts(3, i) = 1.0f;
+        }
+        return WPts;   
+    }
+
+    Eigen::Matrix3Xf HomogeneousForm(std::vector<cv::Point2f> Imgpts)
+    {
+        Eigen::Matrix3Xf ImgPts(3, Imgpts.size());
+        for(int i = 0; i < Imgpts.size(); i++){
+            ImgPts(0, i) = Imgpts[i].x;
+            ImgPts(1, i) = Imgpts[i].y;
+            ImgPts(2, i) = 1.0f;
+        }
+        return ImgPts;   
+    }
 }
+
+
+// cv::Mat rVec6To34ProjMat(Vector6d pose)
+// {
+//     Eigen::Matrix4d lCamPose = ToMat44(pose);
+//     Eigen::Matrix4d rCamPose = lCamPose * GetCam1ToCam0(Cam0ToBodyData, Cam1ToBodyData);
+//     // rCamPose(0,3) = rCamPose(0,3) + 0.5;
+//     std::cout << "rpose : " << rCamPose << std::endl;
+//     Eigen::Matrix4d CamProj = rCamPose.inverse();
+//     double data[] = {   CamProj(0, 0), CamProj(0, 1), CamProj(0, 2), CamProj(0, 3),
+//                         CamProj(1, 0), CamProj(1, 1), CamProj(1, 2), CamProj(1, 3),
+//                         CamProj(2, 0), CamProj(2, 1), CamProj(2, 2), CamProj(2, 3)};    
+//     cv::Mat Proj34(3, 4, CV_64F, data);
+//     return Proj34.clone();
+
+
+// }

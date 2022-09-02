@@ -30,6 +30,8 @@ add_library(${PROJECT_NAME} SHARED
    src/ORBextractor.cc
    src/data.cc
    src/utils.cc
+   src/tracking.cc
+   src/visualize.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
