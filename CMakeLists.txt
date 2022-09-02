@@ -14,10 +14,10 @@ find_package(Pangolin REQUIRED)
 find_package(Ceres REQUIRED)
 
 include_directories(
-${PROJECT_SOURCE_DIR}
-${PROJECT_SOURCE_DIR}/include
-${EIGEN3_INCLUDE_DIR}
-${Pangolin_INCLUDE_DIRS}
+   ${PROJECT_SOURCE_DIR}
+   ${PROJECT_SOURCE_DIR}/include
+   ${EIGEN3_INCLUDE_DIR}
+   ${Pangolin_INCLUDE_DIRS}
 )
 
 
@@ -32,17 +32,18 @@ add_library(${PROJECT_NAME} SHARED
    src/utils.cc
    src/tracking.cc
    src/visualize.cc
+   src/poseGraph.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
-${OpenCV_LIBS}
-${EIGEN3_LIBS}
-${Pangolin_LIBRARIES}
-${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
-${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
-# ${EXTRA_LIBS}
-
+   ${OpenCV_LIBS}
+   ${EIGEN3_LIBS}
+   ${Pangolin_LIBRARIES}
+   ${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
+   ${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
+   # ${EXTRA_LIBS}
 )
+
 
 add_executable(mono_vio_euroc
 main_MonoVio_euroc.cpp)
