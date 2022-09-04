@@ -50,8 +50,12 @@ target_link_libraries(${PROJECT_NAME}
 
 
 add_executable(mono_vio_euroc
-main_MonoVio_euroc.cpp)
+main_MonoVio_euroc.cc)
 target_link_libraries(mono_vio_euroc ${PROJECT_NAME})
+
+add_executable(mono_vi_kitti
+main_Mono_Kitti.cc)
+target_link_libraries(mono_vi_kitti ${PROJECT_NAME})
 
 # Boost ... save/load 
 # message(STATUS "Compile With map save/load function")
