@@ -33,6 +33,10 @@ add_library(${PROJECT_NAME} SHARED
    src/tracking.cc
    src/visualize.cc
    src/poseGraph.cc
+   src/frame.cc
+   src/keyframe.cc
+   src/map.cc
+   src/mapPoint.cc
 )
 
 target_link_libraries(${PROJECT_NAME}
