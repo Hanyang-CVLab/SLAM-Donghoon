@@ -474,33 +474,6 @@ g2o/core/optimization_algorithm_factory.cpp.s:
 	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_factory.cpp.s
 .PHONY : g2o/core/optimization_algorithm_factory.cpp.s
 
-g2o/core/optimization_algorithm_gauss_newton.o: g2o/core/optimization_algorithm_gauss_newton.cpp.o
-
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.o
-
-# target to build an object file
-g2o/core/optimization_algorithm_gauss_newton.cpp.o:
-	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.o
-
-g2o/core/optimization_algorithm_gauss_newton.i: g2o/core/optimization_algorithm_gauss_newton.cpp.i
-
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.i
-
-# target to preprocess a source file
-g2o/core/optimization_algorithm_gauss_newton.cpp.i:
-	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.i
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.i
-
-g2o/core/optimization_algorithm_gauss_newton.s: g2o/core/optimization_algorithm_gauss_newton.cpp.s
-
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.s
-
-# target to generate assembly for a file
-g2o/core/optimization_algorithm_gauss_newton.cpp.s:
-	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.s
-.PHONY : g2o/core/optimization_algorithm_gauss_newton.cpp.s
-
 g2o/core/optimization_algorithm_levenberg.o: g2o/core/optimization_algorithm_levenberg.cpp.o
 
 .PHONY : g2o/core/optimization_algorithm_levenberg.o
@@ -981,9 +954,6 @@ help:
 	@echo "... g2o/core/optimization_algorithm_factory.o"
 	@echo "... g2o/core/optimization_algorithm_factory.i"
 	@echo "... g2o/core/optimization_algorithm_factory.s"
-	@echo "... g2o/core/optimization_algorithm_gauss_newton.o"
-	@echo "... g2o/core/optimization_algorithm_gauss_newton.i"
-	@echo "... g2o/core/optimization_algorithm_gauss_newton.s"
 	@echo "... g2o/core/optimization_algorithm_levenberg.o"
 	@echo "... g2o/core/optimization_algorithm_levenberg.i"
 	@echo "... g2o/core/optimization_algorithm_levenberg.s"

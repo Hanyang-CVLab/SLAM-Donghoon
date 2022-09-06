@@ -20,7 +20,6 @@ file(REMOVE_RECURSE
   "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_with_hessian.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o"
-  "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o"
   "CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o"

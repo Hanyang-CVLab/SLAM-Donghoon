@@ -175,7 +175,7 @@ namespace dhSLAM{
     {
         Eigen::Matrix<T, 4, 4> pos44 = ToMat44(pos);
         Eigen::Matrix<T, 4, 4> proj44 = pos44.inverse();
-        Eigen::Matrix<T, 6, 1> proj = ToVec6(proj44);
+        Eigen::Matrix<T, 6, 1> proj = (proj44);
         return proj;
     }
 

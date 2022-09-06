@@ -430,26 +430,6 @@ iostream
 typeinfo
 -
 
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.cpp
-optimization_algorithm_gauss_newton.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.h
-iostream
--
-../stuff/timeutil.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/timeutil.h
-../stuff/macros.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/macros.h
-solver.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/solver.h
-batch_stats.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/batch_stats.h
-sparse_optimizer.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/sparse_optimizer.h
-
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.h
-optimization_algorithm_with_hessian.h
-/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_with_hessian.h
-
 /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_levenberg.cpp
 optimization_algorithm_levenberg.h
 /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_levenberg.h

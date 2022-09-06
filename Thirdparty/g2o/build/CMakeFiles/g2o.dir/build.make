@@ -561,33 +561,9 @@ CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o.provides: CMa
 CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o.provides.build: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o
 
 
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o: CMakeFiles/g2o.dir/flags.make
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o: ../g2o/core/optimization_algorithm_gauss_newton.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.cpp
-
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.cpp > CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.i
-
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/optimization_algorithm_gauss_newton.cpp -o CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.s
-
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.requires:
-
-.PHONY : CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.requires
-
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.provides: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.requires
-	$(MAKE) -f CMakeFiles/g2o.dir/build.make CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.provides.build
-.PHONY : CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.provides
-
-CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.provides.build: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o
-
-
 CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o: ../g2o/core/jacobian_workspace.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Building CXX object CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/jacobian_workspace.cpp
 
 CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.i: cmake_force
@@ -611,7 +587,7 @@ CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o: ../g2o/core/robust_kernel.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_23) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/robust_kernel.cpp
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.i: cmake_force
@@ -635,7 +611,7 @@ CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o.provides.build: CMakeFiles/g2o.d
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o: ../g2o/core/robust_kernel_factory.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_24) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/robust_kernel_factory.cpp
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.i: cmake_force
@@ -659,7 +635,7 @@ CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o.provides.build: CMakeFil
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o: ../g2o/core/robust_kernel_impl.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_25) "Building CXX object CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/core/robust_kernel_impl.cpp
 
 CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.i: cmake_force
@@ -683,7 +659,7 @@ CMakeFiles/g2o.dir/g2o/core/robust_kernel_impl.cpp.o.provides.build: CMakeFiles/
 
 CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o: ../g2o/stuff/timeutil.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_26) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/timeutil.cpp
 
 CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.i: cmake_force
@@ -707,7 +683,7 @@ CMakeFiles/g2o.dir/g2o/stuff/timeutil.cpp.o.provides.build: CMakeFiles/g2o.dir/g
 
 CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o: ../g2o/stuff/os_specific.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building C object CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_27) "Building C object CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o"
 	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o   -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/os_specific.c
 
 CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.i: cmake_force
@@ -731,7 +707,7 @@ CMakeFiles/g2o.dir/g2o/stuff/os_specific.c.o.provides.build: CMakeFiles/g2o.dir/
 
 CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o: ../g2o/stuff/string_tools.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_28) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/string_tools.cpp
 
 CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.i: cmake_force
@@ -755,7 +731,7 @@ CMakeFiles/g2o.dir/g2o/stuff/string_tools.cpp.o.provides.build: CMakeFiles/g2o.d
 
 CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o: CMakeFiles/g2o.dir/flags.make
 CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o: ../g2o/stuff/property.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_29) "Building CXX object CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o -c /home/donghoon/SLAM-Donghoon/Thirdparty/g2o/g2o/stuff/property.cpp
 
 CMakeFiles/g2o.dir/g2o/stuff/property.cpp.i: cmake_force
@@ -800,7 +776,6 @@ g2o_OBJECTS = \
 "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm.cpp.o" \
 "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_with_hessian.cpp.o" \
 "CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o" \
-"CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o" \
 "CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o" \
 "CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o" \
 "CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o" \
@@ -834,7 +809,6 @@ g2o_EXTERNAL_OBJECTS =
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_with_hessian.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o
-../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o
@@ -845,7 +819,7 @@ g2o_EXTERNAL_OBJECTS =
 ../lib/libg2o.so: CMakeFiles/g2o.dir/g2o/stuff/property.cpp.o
 ../lib/libg2o.so: CMakeFiles/g2o.dir/build.make
 ../lib/libg2o.so: CMakeFiles/g2o.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_31) "Linking CXX shared library ../lib/libg2o.so"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/donghoon/SLAM-Donghoon/Thirdparty/g2o/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_30) "Linking CXX shared library ../lib/libg2o.so"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/g2o.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -874,7 +848,6 @@ CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/parameter_container.cpp
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm.cpp.o.requires
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_with_hessian.cpp.o.requires
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_levenberg.cpp.o.requires
-CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/optimization_algorithm_gauss_newton.cpp.o.requires
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/jacobian_workspace.cpp.o.requires
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/robust_kernel.cpp.o.requires
 CMakeFiles/g2o.dir/requires: CMakeFiles/g2o.dir/g2o/core/robust_kernel_factory.cpp.o.requires

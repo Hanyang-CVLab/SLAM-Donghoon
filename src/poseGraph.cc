@@ -21,64 +21,64 @@ namespace dhSLAM{
         
     }
 
-    void addPoseVertex(g2o::SparseOptimizer* optimizer, g2o::SE3Quat& pose, bool set_fixed, int id)
-    {
-        // std::cout << "add pose: t=" << pose.translation().transpose()
-        //           << " r=" << pose.rotation().coeffs().transpose() << std::endl;
-        g2o::VertexSE3* v_se3 = new g2o::VertexSE3;
-        v_se3->setId(id);
-        // if(set_fixed)
-        v_se3->setEstimate(pose);
-        v_se3->setFixed(set_fixed);
-        optimizer->addVertex(v_se3);
-    }
+    // void addPoseVertex(g2o::SparseOptimizer* optimizer, g2o::SE3Quat& pose, bool set_fixed, int id)
+    // {
+    //     // std::cout << "add pose: t=" << pose.translation().transpose()
+    //     //           << " r=" << pose.rotation().coeffs().transpose() << std::endl;
+    //     g2o::VertexSE3* v_se3 = new g2o::VertexSE3;
+    //     v_se3->setId(id);
+    //     // if(set_fixed)
+    //     v_se3->setEstimate(pose);
+    //     v_se3->setFixed(set_fixed);
+    //     optimizer->addVertex(v_se3);
+    // }
 
-    void addEdgePosePose(g2o::SparseOptimizer* optimizer, int id0, int id1, g2o::SE3Quat& relpose)
-    {
-        // std::cout << "add edge: id0 = " << id0 << ", id1 = " << id1
-                // << ", t=" << relpose.translation().transpose()
-                // << ", r=" << relpose.rotation().coeffs().transpose() << std::endl;
+    // void addEdgePosePose(g2o::SparseOptimizer* optimizer, int id0, int id1, g2o::SE3Quat& relpose)
+    // {
+    //     // std::cout << "add edge: id0 = " << id0 << ", id1 = " << id1
+    //             // << ", t=" << relpose.translation().transpose()
+    //             // << ", r=" << relpose.rotation().coeffs().transpose() << std::endl;
 
-        g2o::EdgeSE3* edge = new g2o::EdgeSE3;
-        edge->setVertex(0, optimizer->vertices().find(id0)->second);
-        edge->setVertex(1, optimizer->vertices().find(id1)->second);
-        edge->setMeasurement(relpose);
-        Eigen::MatrixXd info_matrix = Eigen::MatrixXd::Identity(6,6)* 10;
-        edge->setInformation(info_matrix);
-        optimizer->addEdge(edge);
-    }
+    //     g2o::EdgeSE3* edge = new g2o::EdgeSE3;
+    //     edge->setVertex(0, optimizer->vertices().find(id0)->second);
+    //     edge->setVertex(1, optimizer->vertices().find(id1)->second);
+    //     edge->setMeasurement(relpose);
+    //     Eigen::MatrixXd info_matrix = Eigen::MatrixXd::Identity(6,6)* 10;
+    //     edge->setInformation(info_matrix);
+    //     optimizer->addEdge(edge);
+    // }
 
-    void ToVertexSim3(const g2o::VertexSE3 &v_se3,
-                    g2o::VertexSim3Expmap *const v_sim3)
-    {
-        Eigen::Isometry3d se3 = v_se3.estimate().inverse();
-        Eigen::Matrix3d r = se3.rotation();
-        Eigen::Vector3d t = se3.translation();
+    // void ToVertexSim3(const g2o::VertexSE3 &v_se3,
+    //                 g2o::VertexSim3Expmap *const v_sim3)
+    // {
+    //     Eigen::Isometry3d se3 = v_se3.estimate().inverse();
+    //     Eigen::Matrix3d r = se3.rotation();
+    //     Eigen::Vector3d t = se3.translation();
 
-        // std::cout<<"Convert vertices to Sim3 !!! " <<  " r : " << std::endl
-        //     <<se3.rotation()<< std::endl << " t : "
-        //     <<se3.translation()<<std::endl;
-        g2o::Sim3 sim3(r, t, 1.0);
+    //     // std::cout<<"Convert vertices to Sim3 !!! " <<  " r : " << std::endl
+    //     //     <<se3.rotation()<< std::endl << " t : "
+    //     //     <<se3.translation()<<std::endl;
+    //     g2o::Sim3 sim3(r, t, 1.0);
 
-        v_sim3->setEstimate(sim3);
-    }
+    //     v_sim3->setEstimate(sim3);
+    // }
 
 
 
     // Converte EdgeSE3 to EdgeSim3
-    void ToEdgeSim3(const g2o::EdgeSE3 &e_se3, g2o::EdgeSim3 *const e_sim3, double scale)
-    {
-        Eigen::Isometry3d se3 = e_se3.measurement().inverse();
-        Eigen::Matrix3d r = se3.rotation();
-        Eigen::Vector3d t = se3.translation();
+    // void ToEdgeSim3(const g2o::EdgeSE3 &e_se3, g2o::EdgeSim3 *const e_sim3, double scale)
+    // {
+    //     Eigen::Isometry3d se3 = e_se3.measurement().inverse();
+    //     Eigen::Matrix3d r = se3.rotation();
+    //     Eigen::Vector3d t = se3.translation();
 
-        // std::cout<<"Convert edges to Sim3 !!! " << " r : " << std::endl
-        //     <<se3.rotation()<< std::endl << " t : " 
-        //     <<se3.translation()<<std::endl;
-        g2o::Sim3 sim3(r, t, scale);
+    //     // std::cout<<"Convert edges to Sim3 !!! " << " r : " << std::endl
+    //     //     <<se3.rotation()<< std::endl << " t : " 
+    //     //     <<se3.translation()<<std::endl;
+    //     g2o::Sim3 sim3(r, t, scale);
 
-        e_sim3->setMeasurement(sim3);
-    }
+    //     e_sim3->setMeasurement(sim3);
+    // }
 
     // double FindLoopEdgeScale(int loop_edge_id, int curr_id, Map MapST, cv::Mat K_, std::vector<cv::Mat> map_point_inlier, cv::Mat &relpose)
     // {
